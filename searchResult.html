@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.css">
+    <link rel="stylesheet" href="lib/nprogress/nprogress.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.3/style/weui.min.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.1/css/jquery-weui.min.css">
+    <!--[if lt IE 9]>
+    <script src="lib/html5shiv/html5shiv.min.js"></script>
+    <script src="lib/respond/respond.min.js"></script>
+    <![endif]-->
+    <style>
+        .zdm-searchData .table{
+            width: 100%;
+            table-layout: fixed;
+            word-break: break-all;
+            word-wrap: break-word;
+        }
+        .zdm-searchData .table tr{
+            width: 100%;
+        }
+        .zdm-searchData .table tr td:first-child{
+            max-width: 50%;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+<div class="zdm-searchData">
+    <div class="container">
+        <table class="table table-hover">
+            <caption align="center"><b>查询结果</b></caption>
+            <thead>
+            <tr>
+                <td>昵称</td>
+                <td>时间</td>
+                <td>等级</td>
+            </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+        <div class="weui-loadmore">
+            <i class="weui-loading"></i>
+            <span class="weui-loadmore__tips">正在加载</span>
+        </div>
+    </div>
+</div>
+<script src="lib/jquery/jquery.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.js"></script>
+<script src="lib/nprogress/nprogress.js"></script>
+<script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/jquery-weui.min.js"></script>
+<script>
+    //获得搜索框传递过来的值
+    var value = GetRequest()['input_value'];
+    //获得用户Id
+    requestUserInfo(value,function (userId) {
+        //初始化加载页面为0
+        var page = 0;
+        requestDanmuData(userId,page);
+        // 初始化滚动加载插件
+        $(document.body).infinite();
+        // 监听触发 infinite 事件 当滚动条到达页面底部时触发
+        var loading = false;  //状态标记
+        $(document.body).infinite().on("infinite", function() {
+            if(loading) return;
+            loading = true;
+            //数据加载完成
+            requestDanmuData(userId,page,function () {
+                loading = false;
+            });
+        });
+    });
+    //获得搜索框传递过来的值
+    function GetRequest() {
+        var url = location.search; //获取url中"?"符后的字符串
+        var theRequest = new Object();
+        if (url.indexOf("?") != -1) {
+            var str = url.substr(1);
+            strs = str.split("&");
+            for (var i = 0; i < strs.length; i++) {
+                theRequest[strs[i].split("=")[0]] = decodeURIComponent(strs[i].split("=")[1]);
+            }
+        }
+        return theRequest;
+    }
+    //格式化时间戳
+    function getDate(timeData) {   //timeData 为时间戳
+        var theDate = new Date(timeData);
+        var _hour = theDate.getHours();
+        var _minute = theDate.getMinutes();
+        var _second = theDate.getSeconds();
+        var _year = theDate.getFullYear()
+        var _month = theDate.getMonth();
+        var _date = theDate.getDate();
+        if(_hour<10){_hour="0"+_hour;}
+        if(_minute<10){_minute="0"+_minute; }
+        if(_second<10){_second="0"+_second }
+        _month = _month + 1;
+        if(_month < 10){_month = "0" + _month;}
+        if(_date<10){_date="0"+_date  }
+        return  _year + "-" + _month + "-" + _date + " " + _hour + ":" + _minute + ":" + _second ;
+    }
+    //将获得数据添加到表格中
+    function addData(res){
+        for (var i = 0; i< res.data.list.length;i++) {
+            var $tr = $('<tr></tr>');
+            var $list = res.data.list[i];
+            $td1 = $('<td></td>');
+            $td1.html($list.txt);
+            $td2 = $('<td></td>');
+            $td2.html(getDate($list.t));
+            $td3 = $('<td></td>');
+            $td3.html($list.rid);
+            $tr.append($td1);
+            $tr.append($td2);
+            $tr.append($td3);
+            $('.zdm-searchData .container table tbody').append($tr);
+        }
+    }
+    //发送ajax请求弹幕数据
+    function requestDanmuData(id,index,callback){
+          $.ajax({
+            type:'GET',
+             url:'http://192.168.2.182:8088/douyu/search?key=uid&keyWord='+id+'&from='+index*10,
+            //   url:'http://192.168.2.182:8088/douyu/search?key=rid&keyWord=99999&from='+index*10,
+            dataType:'json',
+            error:function (res) {
+                console.log('error');
+                console.log(res);
+            },
+            success:function (res) {
+                if (res.code == -1){
+                    console.log('error');
+                }else{
+                    if (res.data.size > 0){//查找到数据
+                        if (res.data.size < 10) {//每一页十行数据 小于十行说明数据都加载完成
+                            $(document.body).destroyInfinite();
+                            $(".weui-loadmore").hide();
+                        }
+                        console.log(res);
+                        addData(res);
+                        callback && callback();
+                    }else{//请求数据为空
+                    }
+                }
+            }
+        });
+    }
+    //发送ajax请求个人用户数据
+    function requestUserInfo(username,callback) {
+        var userId ='';
+        $.ajax({
+            type:'GET',
+            url:'http://192.168.2.182:8088/douyu/user?nn=大菠恋',
+            dataType:'json',
+            error:function (res) {
+                console.log('error');
+                console.log(res);
+            },
+            success:function (res) {
+                if (res.code == -1){//没有此用户
+                    console.log('error');
+                }else{
+                    console.log(res);
+                    userId = res.data.list[0].uid;
+                    callback(userId);
+                }
+            }
+        });
+    }
+</script>
+</body>
+</html>
