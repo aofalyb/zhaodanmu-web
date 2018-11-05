@@ -44,8 +44,8 @@ function bannerScroll() {
     var index = 1;//索引值
     var timerId = 0;//定时器ID值
     var ulObj = bannerObj.querySelector('.pic');//ul元素
-    var width = bannerObj.offsetWidth;//容器宽度   移动长度为 index*width
-    var indexObjs = bannerObj.querySelectorAll('.index li');
+    var width = bannerObj.offsetWidth;//容器宽度   移动长度为 index.html*width
+    var indexObjs = bannerObj.querySelectorAll('.index.html li');
     //添加过渡功能
     var  addTransition = function(){
         ulObj.style.transition = 'all 0.2s linear';
@@ -104,7 +104,7 @@ function bannerScroll() {
             //做位移
             setTransform(-index* width);
         }
-        //索引圆点样式变化 1-8  ->  0-7  索引为：index-1
+        //索引圆点样式变化 1-8  ->  0-7  索引为：index.html-1
         changeIndex();
     });
     //监听是否滑动图片

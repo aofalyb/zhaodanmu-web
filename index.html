@@ -1,130 +1,84 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no,maximum-scale=1.0,minimum-scale=1.0">
-    <title>京东移动端</title>
-    <link rel="stylesheet" href="css/base.css"/>
-    <link rel="stylesheet" href="css/index.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Title</title>
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <style>
+        .navbar-default .navbar-toggle {
+            background-color: white;
+        }
+        .navbar-default .navbar-toggle {
+            border-color: white;
+        }
+        .navbar-header {
+            background-color: white;
+        }
+
+        .navbar-default .navbar-toggle:hover,
+        .navbar-default .navbar-toggle:focus {
+            background-color: white;
+        }
+        .navbar-default .navbar-toggle .icon-bar {
+            background-color: #2194CE;
+        }
+    </style>
 </head>
 <body>
-<div class="jd_container">
-    <header class="jd_search">
-        <div class="jd_search_box">
-            <a class="icon_logo f_left"></a>
-            <form action="#">
-                <span class="icon_search"></span>
-                <input type="search" placeholder="占位符" class="input">
-            </form>
-            <a class="login">登录</a>
+
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#" style="font-size: 14px">我们不生产弹幕，只是直播间的搬运工~</a>
         </div>
-    </header>
-    <div class="jd_banner">
-        <ul class="pic clearfix">
-            <li><a href="#"><img src="images/l8.jpg" alt=""></a></li>
-            <li><a href="#"><img src="images/l1.jpg" alt=""></a></li>
-            <li><a href="#"><img src="images/l2.jpg" alt=""></a></li>
-            <li><a href="#"><img src="images/l3.jpg" alt=""></a></li>
-            <li><a href="#"><img src="images/l4.jpg" alt=""></a></li>
-            <li><a href="#"><img src="images/l5.jpg" alt=""></a></li>
-            <li><a href="#"><img src="images/l6.jpg" alt=""></a></li>
-            <li><a href="#"><img src="images/l7.jpg" alt=""></a></li>
-            <li><a href="#"><img src="images/l8.jpg" alt=""></a></li>
-            <li><a href="#"><img src="images/l1.jpg" alt=""></a></li>
-        </ul>
-        <ul class="index">
-            <li class="now"></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-        </ul>
-    </div>
-    <div class="jd_nav">
-        <ul class="clearfix">
-            <li><a href="#"><img src="images/nav0.png"></a>
-                <p>分类</p>
-            </li>
-            <li><a href="#"><img src="images/nav1.png"></a>
-                <p>分类</p></li>
-            <li><a href="#"><img src="images/nav2.png">
-                <p>分类</p></a></li>
-            <li><a href="#"><img src="images/nav3.png">
-                <p>分类</p></a></li>
-            <li><a href="#"><img src="images/nav4.png">
-                <p>分类</p></a></li>
-            <li><a href="#"><img src="images/nav5.png">
-                <p>分类</p></a></li>
-            <li><a href="#"><img src="images/nav6.png">
-                <p>分类</p></a></li>
-            <li><a href="#"><img src="images/nav7.png">
-                <p>分类</p></a></li>
-        </ul>
-    </div>
-    <div class="jd_product"></div>
-    <section class="jd_product_box m_t10 nb">
-        <div class="tit clearfix">
-            <div class="f_left">
-                <span class="icon f_left"></span>
-                <span class="name f_left m_l10">掌上描述</span>
-                <div class="time f_left m_l10 ">
-                    <span>0</span>
-                    <span>0</span>
-                    <span>:</span>
-                    <span>0</span>
-                    <span>0</span>
-                    <span>:</span>
-                    <span>0</span>
-                    <span>0</span>
-                </div>
-            </div>
-            <div class="f_right m_r10">
-                <span>更多&gt;</span>
-            </div>
-        </div>
-        <div class="content m_t10">
-            <ul>
-                <li><a href="#"><img src="images/detail01.jpg"></a>
-                <p class="newprice">&yen;10.00</p><p class="oldprice">&yen;100.00</p>
-                </li>
-                <li><a href="#"><img src="images/detail02.jpg"></a>
-                    <p class="newprice">&yen;10.00</p><p class="oldprice">&yen;100.00</p>
-                </li>
-                <li><a href="#"><img src="images/detail01.jpg"></a>
-                    <p class="newprice">&yen;10.00</p><p class="oldprice">&yen;100.00</p>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
+                <li><a href="#">Link</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Action</a></li>
+                        <li><a href="#">Another action</a></li>
+                        <li><a href="#">Something else here</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">Separated link</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">One more separated link</a></li>
+                    </ul>
                 </li>
             </ul>
-        </div>
-    </section>
-    <section class="jd_product_box m_t10">
-        <div class="tit"><h3 class="m_l10">京东超市</h3></div>
-        <div class="content clearfix">
-            <a class="f_left w_50p br" href="#"><img src="images/cp1.jpg"></a>
-            <a class="f_right w_50p bb" href="#"><img src="images/cp2.jpg"></a>
-            <a class="f_right w_50p" href="#"><img src="images/cp3.jpg"></a>
-        </div>
-    </section>
-    <section class="jd_product_box m_t10">
-        <div class="tit"><h3 class="m_l10">京东自营</h3></div>
-        <div class="content clearfix">
-            <a class="f_right w_50p bl " href="#"><img src="images/cp4.jpg"></a>
-            <a class="f_left w_50p bb" href="#"><img src="images/cp5.jpg"></a>
-            <a class="f_left w_50p" href="#"><img src="images/cp6.jpg"></a>
-        </div>
-    </section>
-    <section class="jd_product_box m_t10">
-        <div class="tit"><h3 class="m_l10">京东热门</h3></div>
-        <div class="content clearfix">
-            <a class="f_left w_50p br" href="#"><img src="images/cp1.jpg"></a>
-            <a class="f_right w_50p bb" href="#"><img src="images/cp2.jpg"></a>
-            <a class="f_right w_50p" href="#"><img src="images/cp3.jpg"></a>
-        </div>
-    </section>
-</div>
-<script src="js/common.js"></script>
-<script src="js/index.js"></script>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#">Link</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Action</a></li>
+                        <li><a href="#">Another action</a></li>
+                        <li><a href="#">Something else here</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">Separated link</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+<!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+<script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
 </body>
 </html>
