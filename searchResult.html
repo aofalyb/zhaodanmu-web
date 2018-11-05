@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.css">
     <link rel="stylesheet" href="lib/nprogress/nprogress.css">
@@ -21,11 +24,9 @@
         }
         .zdm-searchData .table tr{
             width: 100%;
+            font-size: 12px;
         }
-        .zdm-searchData .table tr td:first-child{
-            max-width: 50%;
-            overflow: hidden;
-        }
+
     </style>
 </head>
 <body>
@@ -35,9 +36,9 @@
             <caption align="center"><b>查询结果</b></caption>
             <thead>
             <tr>
-                <td>昵称</td>
-                <td>时间</td>
-                <td>等级</td>
+                <td style="width: 30%">弹幕内容</td>
+                <td style="width: 30%">时间</td>
+                <td style="width: 20%">房间号</td>
             </tr>
             </thead>
             <tbody>
@@ -126,7 +127,7 @@
     function requestDanmuData(id,index,callback){
           $.ajax({
             type:'GET',
-             url:'http://192.168.2.182:8088/douyu/search?key=uid&keyWord='+id+'&from='+index*10,
+             url:'http://192.168.2.182:8088/douyu/search?key=rid&keyWord=99999&from='+index*10,
             //   url:'http://192.168.2.182:8088/douyu/search?key=rid&keyWord=99999&from='+index*10,
             dataType:'json',
             error:function (res) {
@@ -156,7 +157,7 @@
         var userId ='';
         $.ajax({
             type:'GET',
-            url:'http://192.168.2.182:8088/douyu/user?nn=大菠恋',
+            url:'http://192.168.2.182:8088/douyu/user?nn=' + username,
             dataType:'json',
             error:function (res) {
                 console.log('error');
