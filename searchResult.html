@@ -196,8 +196,8 @@
     function requestDanmuData(id,index,callback){
           $.ajax({
             type:'GET',
-             //url:'http://192.168.2.182:8088/douyu/search?key=uid&keyWord=' + id + '&from=' + index * pageSize,
-            url:'http://139.159.252.127:8088/douyu/search?key=rid&keyWord=99999&from=' + index * pageSize,
+              url:'http://139.159.252.127:8088/douyu/search?key=uid&keyWord=' + id + '&from=' + index * pageSize,
+            //url:'http://139.159.252.127:8088/douyu/search?key=rid&keyWord=99999&from=' + index * pageSize,
             dataType:'json',
             error:function (res) {
                 console.log('error');
