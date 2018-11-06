@@ -90,7 +90,16 @@
 <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
 <script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/jquery-weui.min.js"></script>
+
 <script>
+    //https://apic.douyucdn.cn/upload/avanew/face/201805/a63ae26b129cd844ec230f04d7bef796_middle.jpg
+    //https://apic.douyucdn.cn/upload/avanew/face@S201703@S27@S20@S3c3d2b8a425d58ec33b8152f317fa1b7_middle.jpg
+    //https://apic.douyucdn.cn/upload/avanew/face/201703/27/20/3c3d2b8a425d58ec33b8152f317fa1b7_middle.jpg
+    //"avanew@Sface@S201612@S23@S12@S5e8a1f769c54eb604bd0af581127694c"
+    function realAvaPath(path) {
+        return "https://apic.douyucdn.cn/upload/" + path.replace(new RegExp("@S",'g'),"/") + "_middle.jpg";
+    }
+
     //获得搜索框传递过来的值
     var value = GetRequest()['input_value'];
     //获得用户Id
@@ -216,7 +225,7 @@
         var vLevel = res.nl;
         var cLevel = res.level;
         var $media = $(".adm-personInfo .media").children('div');
-        $media.eq(0).children().attr('src','images/buy-logo.png');
+        $media.eq(0).children().attr('src',realAvaPath(headImage));
         $media.eq(1).children('h4').html('昵称: ' + name);
         $media.eq(1).children('p').eq(0).html('Vip等级: '+vLevel);
         $media.eq(1).children('p').eq(1).html('普通等级: '+cLevel);
