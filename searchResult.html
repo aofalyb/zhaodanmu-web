@@ -22,6 +22,29 @@
             width: 100%;
             font-size: 12px;
         }
+        .adm-personInfo .container{
+            padding: 15px 0px;
+            border-top: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+        }
+        .adm-personInfo .media-heading{
+            padding-bottom: 10px;
+        }
+        .adm-personInfo .media-body p b{
+            display: inline-block;
+            width: 50px;
+            height: 20px;
+            border-radius: 10px;
+            font-weight: normal;
+            text-align: center;
+            box-shadow: 2px 2px 2px #ddd;
+        }
+        .adm-personInfo .media-body p:first-of-type b{
+            background-color: #f5e79e;
+        }
+        .adm-personInfo .media-body p:last-of-type b{
+            background-color: #bce8f1;
+        }
     </style>
 </head>
 <body>
@@ -53,7 +76,7 @@
         <div class="container">
             <div class="media">
                 <div class="media-left">
-                        <img class="media-object" src="..." alt="...">
+                        <img class="media-object" src="" alt="头像">
                 </div>
                 <div class="media-body">
                     <h4 class="media-heading"></h4>
@@ -102,6 +125,7 @@
 
     //获得搜索框传递过来的值
     var value = GetRequest()['input_value'];
+    const pageSize = 15;
     //获得用户Id
     requestUserInfo(value,function (userId) {
         //初始化加载页面为0
@@ -114,6 +138,7 @@
         $(document.body).infinite().on("infinite", function() {
             if(loading) return;
             loading = true;
+            page++;
             //数据加载完成
             requestDanmuData(userId,page,function () {
                 loading = false;
@@ -171,8 +196,8 @@
     function requestDanmuData(id,index,callback){
           $.ajax({
             type:'GET',
-             url:'http://192.168.2.182:8088/douyu/search?key=uid&keyWord='+id+'&from='+index*10,
-            //   url:'http://192.168.2.182:8088/douyu/search?key=rid&keyWord=99999&from='+index*10,
+             //url:'http://192.168.2.182:8088/douyu/search?key=uid&keyWord=' + id + '&from=' + index * pageSize,
+            url:'http://192.168.2.182:8088/douyu/search?key=rid&keyWord=99999&from=' + index * pageSize,
             dataType:'json',
             error:function (res) {
                 console.log('error');
@@ -183,14 +208,18 @@
                     console.log('error');
                 }else{
                     if (res.data.size > 0){//查找到数据
-                        if (res.data.size < 10) {//每一页十行数据 小于十行说明数据都加载完成
-                            $(document.body).destroyInfinite();
-                            $(".weui-loadmore").hide();
+                        console.log(res);
+                        if (res.data.size < pageSize) {//每一页十行数据 小于十行说明数据都加载完成
+                             clearLoadmore();
                         }
                         console.log(res);
                         addData(res);
                         callback && callback();
                     }else{//请求数据为空
+                         clearLoadmore();
+                        if (!$('.zdm-searchData tr')){//没有有弹幕数据
+                            $('.zdm-searchData').html('<p>弹幕记录为空</p>');
+                        }
                     }
                 }
             }
@@ -208,8 +237,9 @@
                 console.log(res);
             },
             success:function (res) {
-                if (res.code == -1){//没有此用户
-                    console.log('error');
+                if (res.data.list.length == 0){//没有此用户
+                    clearLoadmore();
+                    $('.zdm-searchData').html('<p>没有找到此用户信息</p>');
                 }else{
                     console.log(res);
                     userId = res.data.list[0].uid;
@@ -227,8 +257,47 @@
         var $media = $(".adm-personInfo .media").children('div');
         $media.eq(0).children().attr('src',realAvaPath(headImage));
         $media.eq(1).children('h4').html('昵称: ' + name);
-        $media.eq(1).children('p').eq(0).html('Vip等级: '+vLevel);
-        $media.eq(1).children('p').eq(1).html('普通等级: '+cLevel);
+        $media.eq(1).children('p').eq(0).html('贵族等级: '+'<b>'+vipLevel(vLevel)+'</b>');
+        $media.eq(1).children('p').eq(1).html('普通等级: '+'<b>'+cLevel+'</b>');
+    }
+    //清除加载更多提示
+    function  clearLoadmore() {
+        $(document.body).destroyInfinite();
+        $(".weui-loadmore").hide();
+    }
+    function vipLevel(vLevel){
+        var levelName ='';
+        switch (vLevel) {
+            case 0: {
+                levelName = '平民';
+            }break;
+            case 1: {
+                levelName = '游侠';
+            }break;
+            case 2:{
+                levelName = '骑士';
+            }break;
+            case 3:{
+                levelName = '子爵';
+            }break;
+            case 4:{
+                levelName = '伯爵';
+            }break;
+            case 5:{
+                levelName = '公爵';
+            }break;
+            case 6:{
+                levelName = '国王';
+            }break;
+            case 7:{
+                levelName = '皇帝';
+            }break;
+            default:{
+                levelName = vLevel;
+                break;
+            }
+        }
+        return levelName;
     }
 </script>
 </body>
