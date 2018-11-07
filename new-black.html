@@ -2,11 +2,49 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>Title</title>
     <link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.3/style/weui.min.css">
     <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.1/css/jquery-weui.min.css">
+
+    <style>
+        .weui-media-box__desc {
+            -webkit-line-clamp: 999;
+        }
+    </style>
 </head>
 <body>
+
+<div class="weui-search-bar" id="searchBar">
+    <form class="weui-search-bar__form">
+        <div class="weui-search-bar__box">
+            <i class="weui-icon-search"></i>
+            <input type="search" class="weui-search-bar__input" id="searchInput" placeholder="搜索" required="">
+            <a href="javascript:" class="weui-icon-clear" id="searchClear"></a>
+        </div>
+        <label class="weui-search-bar__label" id="searchText">
+            <i class="weui-icon-search"></i>
+            <span>搜索</span>
+        </label>
+    </form>
+    <a href="javascript:" class="weui-search-bar__cancel-btn" id="searchCancel">取消</a>
+</div>
+
+<div class="weui-panel weui-panel_access">
+    <div class="weui-panel__bd" id="listContainer">
+        <!--<a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">-->
+            <!--<div class="weui-media-box__bd">-->
+                <!--<p class="weui-media-box__desc">由各种物质组成的巨型球状天体，叫做星球。星球有一定的形状，有自己的运行轨道。</p>-->
+            <!--</div>-->
+        <!--</a>-->
+    </div>
+    <div class="weui-loadmore" id="loadMoreFooter">
+        <i class="weui-loading"></i>
+        <span class="weui-loadmore__tips">正在加载</span>
+    </div>
+</div>
+
 
 
 <!-- body 最后 -->
@@ -16,6 +54,134 @@
 <!-- 如果使用了某些拓展插件还需要额外的JS -->
 <script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/swiper.min.js"></script>
 <script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/city-picker.min.js"></script>
+
+<script>
+    //格式化时间戳
+    function getDate(timeData) {   //timeData 为时间戳
+        var theDate = new Date(timeData);
+        var _hour = theDate.getHours();
+        var _minute = theDate.getMinutes();
+        var _second = theDate.getSeconds();
+        var _year = theDate.getFullYear()
+        var _month = theDate.getMonth();
+        var _date = theDate.getDate();
+        if(_hour<10){_hour="0"+_hour;}
+        if(_minute<10){_minute="0"+_minute; }
+        if(_second<10){_second="0"+_second }
+        _month = _month + 1;
+        if(_month < 10){_month = "0" + _month;}
+        if(_date<10){_date="0"+_date  }
+        return  _year + "/" + _month + "/" + _date + " " + _hour + ":" + _minute + ":" + _second ;
+    }
+</script>
+
+<script>
+
+    let pageNum = 0;
+    const pageSize = 15;
+
+    function appendNextPage(dataList) {
+        if(dataList.length == 0) {
+            return;
+        }
+        for (let i = 0; i < dataList.length; i++) {
+            $("#listContainer").append(appendAppMsgDiv(dataList[i]));
+        }
+    }
+
+    function appendAppMsgDiv(perData) {
+        var box_appmsg = $("<a href='javascript:void(0);' class='weui-media-box weui-media-box_appmsg'>")
+        var box_bd = $("<div class='weui-media-box__bd'>");
+        box_appmsg.append(box_bd);
+        var box_desc = $("<p class='weui-media-box__desc'></p>")
+        box_desc.html(operateDescBuild(perData));
+
+        box_bd.append(box_desc)
+        return box_appmsg;
+    }
+
+    /**
+     * append底部暂无更多数据标识
+     */
+    function appedNoneDataDiv(container) {
+        var noneData = $("<div class='weui-loadmore weui-loadmore_line'>");
+        var noneTips = $("<span class='weui-loadmore__tips'>暂无数据</span>");
+        noneData.append(noneTips);
+        container.append(noneData);
+        $("#loadMoreFooter").hide();
+    }
+
+    function operateDescBuild(perData) {
+        var identity = "普通用户";
+        if(perData.otype == 1) {
+            identity = "房管";
+        } else if(perData.otype == 2) {
+            identity = "主播";
+        } else if(perData.otype == 3) {
+            identity = "超管";
+        }
+        var endTime = "";
+        if(perData.endtime != null) {
+            endTime =  getDate(perData.endtime * 1000);
+        } else {
+            endTime = "永久封禁";
+        }
+
+        return "<a style='color: blue'>" + identity + "</a><a style='font-weight: 1000;color: #0f0f0f'>@" + perData.snic + "(" + perData.sid + ")" + "</a>在直播间[" + perData.rid + "]禁言了用户<a style='color: red'>@"
+                +  perData.dnic + "(" + perData.did + ")</a><br>操作时间:" + getDate(perData.t) + "<br>封禁结束时间<a style='color: green'>" + endTime + "</a>"
+    }
+
+    function requestNewBlackList(pageNum,callback) {
+        console.log("pageNum --> " + pageNum);
+        $.ajax({
+            url:"http://139.159.252.127:8088/douyu/newBlack?from=" + pageNum * pageSize,
+            dataType:"json",
+            success:function (data) {
+                console.log(data)
+                if(data.code != 0) {
+                    $.alert(data.descZh)
+                    return
+                }
+                callback(data.data.list);
+            }
+        });
+    }
+
+    //默认加载第一页，pageNum=0;
+    $(document).ready(function () {
+        const HOME_PAGE_NUM = 0;
+        requestNewBlackList(HOME_PAGE_NUM,function (dataList) {
+            appendNextPage(dataList);
+            if(dataList.length < pageSize) {
+                $(document.body).destroyInfinite();
+                appedNoneDataDiv($("#listContainer"));
+                return;
+            }
+            pageNum ++ ;
+        })
+    })
+
+</script>
+
+<script>
+    var loading = false;  //状态标记
+    $(document.body).infinite().on("infinite", function() {
+        if(loading) return;
+        loading = true;
+
+        requestNewBlackList(pageNum,function (dataList) {
+            appendNextPage(dataList);
+            if(dataList.length < pageSize) {
+                $(document.body).destroyInfinite();
+                appedNoneDataDiv($("#listContainer"));
+                return;
+            }
+            pageNum ++ ;
+            loading = false;
+        })
+
+    });
+</script>
 
 </body>
 </html>
