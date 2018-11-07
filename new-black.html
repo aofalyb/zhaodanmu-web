@@ -12,6 +12,9 @@
         .weui-media-box__desc {
             -webkit-line-clamp: 999;
         }
+        .weui-cell {
+            padding: 10px 0 0 0
+        }
     </style>
 </head>
 <body>
@@ -94,7 +97,8 @@
         var box_bd = $("<div class='weui-media-box__bd'>");
         box_appmsg.append(box_bd);
         var cell_link = $("<a href='javascript:void(0);' class='weui-cell weui-cell_access weui-cell_link'>")
-        var cell__bd = $("<div class='weui-cell__bd'>查看更多</div>")
+        cell_link.attr("href","searchResult.html?input_value=" + perData.dnic);
+        var cell__bd = $("<div class='weui-cell__bd'>膜拜他的发言记录</div>")
         cell_link.append(cell__bd);
         var cell__ft = $("<span class='weui-cell__ft'></span>")
         cell_link.append(cell__ft)
