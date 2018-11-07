@@ -94,11 +94,14 @@
                         <span class="glyphicon glyphicon-search"></span>
                     </div>
                 </div>
+                <div class="zdm-search-history">
+                    <ul>
+
+                    </ul>
+                    <div class="clear-all"></div>
+                </div>
             </div>
         </nav>
-        <section class="zdm-rich">
-            <section class="zdm-hot"></section>
-        </section>
     </div>
 </div>
 
@@ -123,12 +126,52 @@
         $(window).ajaxSend(function () {
             NProgress.done();
         });
+        //搜索框元素
+        let $searchElement = $('#zdm-nav-search input');
+        //搜索历史记录
+        let $historyElement = $('.zdm-search-history');
+        //历史记录默认隐藏
+        $historyElement.hide();
+        /*1.默认根据历史记录渲染历史列表*/
+        let historyListJson = localStorage.getItem('zdm-historyList') || '[]';
+        let historyListArr = JSON.parse(historyListJson);
+        renderHistoryInput();
+        /*3.点击删除的时候删除对应的历史记录渲染列表*/
+        $historyElement.children('ul').on('click','a',function () {
+            var index = $(this).data('index');
+            /*删除*/
+            historyListArr.splice(index,1);
+            /*保存*/
+            localStorage.setItem('zdm-historyList',JSON.stringify(historyListArr));
+            /*渲染一次*/
+            renderHistoryInput();
+        });
+        /*4.点击清空的时候清空历史记录渲染列表*/
+        $historyElement.children('.clear-all').on('click','a',function () {
+            /*清空*/
+            historyListArr = [];
+            /*慎用  清空网上的所有本地存储*/
+            //localStorage.clear();
+            //localStorage.removeItem('zdm-historyList');
+            localStorage.setItem('zdm-historyList','');
+            renderHistoryInput();
+        })
+        //点击某项历史记录后,文本显示在搜索框内
+        $historyElement.children('ul').on('click','span',function () {
+            let selectVal =$(this).html();
+            $searchElement.val(selectVal);
+        })
+        //鼠标在输入框时 历史记录显示
+        $searchElement.on('focus',function () {
+            $historyElement.show();
+        });
+
         // 监听搜索框回车事件并响应
-        $("#zdm-nav-search input").on('keypress',function (e) {
+        $(document).on('keypress',function (e) {
             if (e.charCode == 13) {
-                var value = $(this).val();
-                var res = judgeInputval(value);
-                $(this).popover();//初始化弹框 必须要有
+                let value = $searchElement.val();
+                let res = judgeInputval(value);
+                $searchElement.popover();//初始化弹框 必须要有
                 if (res < 0) {
                     var html = '';
                     if (res == -1){
@@ -136,12 +179,21 @@
                     }else if (res == -2){
                         html = '最多输入12个字符';
                     }
-                    // $(this).data('content',html);
-                    this.dataset.content = html;//设置弹框内容
-                    $(this).popover('show');//显示弹框
+                    $searchElement.get(0).dataset.content = html;//设置弹框内容
+                    $searchElement.popover('show');//显示弹框
                 }else{
+                    /*2.input监听到enter键并且输入框满足条件时更新历史记录渲染列表*/
+                    /*追加一条历史*/
+                    historyListArr.forEach(function (item,index) {
+                        if (item === value){
+                            historyListArr.splice(index,1);
+                            return false;//跳出循环
+                        }
+                    })
+                    historyListArr.unshift(value);//添加到数组第一项
+                    /*保存*/
+                    localStorage.setItem('zdm-historyList',JSON.stringify(historyListArr));
                     $(window).attr('location','searchResult.html?input_value='+value)
-                    $(this).popover('hide');//隐藏弹框
                 }
             }
         });
@@ -154,6 +206,20 @@
                 res = -2;
             }
             return res;
+        }
+        //渲染搜索记录列表
+        function renderHistoryInput() {
+            var html = '';
+            historyListArr.forEach(function (item,i) {
+                html += '<li><span>'+item+'</span><a data-index="'+i+'" href="javascript:;">删除</a></li>';
+            });
+            html = html || '';
+            $historyElement.children('ul').html(html);
+            if (html !='') {//历史记录不为空
+                $historyElement.children('.clear-all').html('<a>清空历史记录</a>');
+            }else{
+                $historyElement.children('.clear-all').html('');
+            }
         }
     });
 </script>

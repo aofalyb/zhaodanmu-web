@@ -30,52 +30,12 @@ a:hover{
 .float_right{
     float: right;
 }
-
-/*字体图标*/
-/*自定义字体图标*/
-/*1.通过@font-face定义自己的字体*/
-@font-face {
-    /*2.申明自己的字体名称*/
-    font-family: 'wjs';
-    /*3.引入字体文件（约束某一段字符代码什么图案）*/
-    src:
-            /*url双引号可加可不加*/
-            url("../fonts/MiFie-Web-Font.svg") format('svg'),
-            url("../fonts/MiFie-Web-Font.eot") format('embedded-opentype'),
-            url("../fonts/MiFie-Web-Font.ttf") format('truetype'),
-            url("../fonts/MiFie-Web-Font.woff") format('woff');
-}
-.wjs_font{
-    font-family: wjs;
-}
-.wjs_icon_phone::before{
-    /*必须是双引号*/
-    content: "\e908";
-}
-.wjs_icon_tel::before {
-    content: "\e909";
-}
-.wjs_icon_logo::before {
-    content: "\e920";
-}
-.wjs_icon_dollar::before {
-    content: "\e903";
-}
-.wjs_icon_clock::before {
-    content: "\e906";
-}
-.wjs_icon_video::before {
-    content: "\e905";
-}
-
 /*index css*/
 /*header部分*/
 .zdm-topbar{
     height: 175px;
     background: #212121;
-    /*background: url("../images/top-bg.jpg") center/cover no-repeat;*/
 }
-
 /*导航栏*/
 .zdm-nav{
     padding: 30px;
@@ -133,9 +93,28 @@ a:hover{
     left: 0px;
     top: 23px;
     font-size: 16px;
-    color: #333;
+    color: #ccc;
     font-weight: normal;
 }
 .zdm-nav .tab-content .popover{
-    color: red;
+    color: #cc995a;
 }
+.zdm-nav .zdm-search-history{
+    cursor: pointer;
+}
+.zdm-nav .zdm-search-history ul li{
+    padding-top: 10px;
+}
+.zdm-nav .zdm-search-history ul li span:hover{
+    border-bottom: 1px solid #ddd;
+}
+.zdm-nav .zdm-search-history ul li a{
+    float: right;
+}
+.zdm-nav .zdm-search-history ul li a:hover,
+.zdm-nav .zdm-search-history .clear-all a:hover{
+    border-bottom: 1px solid #f00;
+}
+ .zdm-nav .zdm-search-history .clear-all{
+     text-align: center;
+ }
