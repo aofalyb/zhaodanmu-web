@@ -93,10 +93,15 @@
         var box_appmsg = $("<a href='javascript:void(0);' class='weui-media-box weui-media-box_appmsg'>")
         var box_bd = $("<div class='weui-media-box__bd'>");
         box_appmsg.append(box_bd);
+        var cell_link = $("<a href='javascript:void(0);' class='weui-cell weui-cell_access weui-cell_link'>")
+        var cell__bd = $("<div class='weui-cell__bd'>查看更多</div>")
+        cell_link.append(cell__bd);
+        var cell__ft = $("<span class='weui-cell__ft'></span>")
+        cell_link.append(cell__ft)
         var box_desc = $("<p class='weui-media-box__desc' style='font-size: 15px'></p>")
         box_desc.html(operateDescBuild(perData));
-
         box_bd.append(box_desc)
+        box_bd.append(cell_link)
         return box_appmsg;
     }
 
