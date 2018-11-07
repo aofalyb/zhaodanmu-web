@@ -143,7 +143,7 @@
     function requestNewBlackList(pageNum,callback) {
         console.log("pageNum --> " + pageNum);
         $.ajax({
-            url:"https://139.159.252.127/douyu/newBlack?from=" + pageNum * pageSize,
+            url:"http://139.159.252.127:8088/douyu/newBlack?from=" + pageNum * pageSize,
             dataType:"json",
             success:function (data) {
                 console.log(data)
