@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>找弹幕网-用户弹幕搜索结果</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -20,7 +20,7 @@
         }
         .zdm-searchData .table tr{
             width: 100%;
-            font-size: 12px;
+            font-size: 15px;
         }
         .adm-personInfo .container{
             padding: 15px 0px;
@@ -45,6 +45,9 @@
         .adm-personInfo .media-body p:last-of-type b{
             background-color: #bce8f1;
         }
+        li a {
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -66,7 +69,7 @@
                 <li><a href="#">主页-搜弹幕 <span class="sr-only">(current)</span></a></li>
                 <li><a href="#">素质广场</a></li>
                 <li><a href="#">24H排行</a></li>
-                <li style="text-align: center"><img src="images/buy-logo.png"></li>
+                <li><a href="new-black.html">禁言小黑屋</a></li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -76,7 +79,7 @@
         <div class="container">
             <div class="media">
                 <div class="media-left">
-                        <img class="media-object" src="" alt="头像">
+                    <img class="media-object" src="" alt="头像">
                 </div>
                 <div class="media-body">
                     <h4 class="media-heading"></h4>
@@ -182,9 +185,9 @@
             var $list = res.data.list[i];
             $td1 = $('<td></td>');
             $td1.html($list.txt);
-            $td2 = $('<td></td>');
+            $td2 = $("<td style='font-size: 11px'></td>");
             $td2.html(getDate($list.t));
-            $td3 = $('<td></td>');
+            $td3 = $("<td style='font-size: 11px'></td>");
             $td3.html($list.rid);
             $tr.append($td1);
             $tr.append($td2);
