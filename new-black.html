@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <title>禁言小黑屋</title>
     <link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.3/style/weui.min.css">
     <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.1/css/jquery-weui.min.css">
@@ -144,7 +143,7 @@
     function requestNewBlackList(pageNum,callback) {
         console.log("pageNum --> " + pageNum);
         $.ajax({
-            url:"http://139.159.252.127:8088/douyu/newBlack?from=" + pageNum * pageSize,
+            url:"https://139.159.252.127/douyu/newBlack?from=" + pageNum * pageSize,
             dataType:"json",
             success:function (data) {
                 console.log(data)
