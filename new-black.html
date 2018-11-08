@@ -158,6 +158,11 @@
 
     //默认加载第一页，pageNum=0;
     $(document).ready(function () {
+
+        if(document.location.protocol == "https") {
+            $.alert("页面不能使用HTTPS协议访问，请手动切换至HTTP");
+        }
+
         const HOME_PAGE_NUM = 0;
         requestNewBlackList(HOME_PAGE_NUM,function (dataList) {
             appendNextPage(dataList);
