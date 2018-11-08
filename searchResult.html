@@ -117,6 +117,16 @@
 <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
 <script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/jquery-weui.min.js"></script>
+<script>
+    //默认加载第一页，pageNum=0;
+    $(document).ready(function () {
+
+        if(document.location.protocol == "https:") {
+            $.alert("抱歉，页面不能使用HTTPS协议访问，请手动切换至HTTP(点击地址输入框，修改网址开头https为http)");
+            //window.location.href = "http:" + document.location.hostname + document.location.pathname;
+        }
+    })
+</script>
 
 <script>
     //https://apic.douyucdn.cn/upload/avanew/face/201805/a63ae26b129cd844ec230f04d7bef796_middle.jpg
