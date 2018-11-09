@@ -13,6 +13,20 @@
             -webkit-line-clamp: 999;
         }
 
+        .list-child-end {
+            bottom: 0;
+            border-bottom: 1px solid #e5e5e5;
+            -webkit-transform-origin: 0 100%;
+            transform-origin: 0 100%;
+            -webkit-transform: scaleY(.5);
+            transform: scaleY(.5);
+        }
+
+        body, html {
+            height: 100%;
+            -webkit-tap-highlight-color: transparent;
+        }
+
     </style>
 </head>
 <body>
@@ -104,7 +118,7 @@
     }
 
     function appendAppMsgDiv(perData) {
-        var listChild = $("<div></div>");
+        var listChild = $("<div class='list-child'></div>");
         var box_appmsg = $("<a href='javascript:void(0);' class='weui-media-box weui-media-box_appmsg'>")
         var box_bd = $("<div class='weui-media-box__bd'>");
         box_appmsg.append(box_bd);
@@ -125,6 +139,8 @@
         panel__ft.append(cell_link);
         listChild.append(panel__ft);
 
+        var endLine = $("<div class='list-child-end'></div>")
+        listChild.append(endLine);
         return listChild;
     }
 
