@@ -37,17 +37,17 @@
 <body>
 
 <div class="weui-search-bar" id="searchBar">
-    <form class="weui-search-bar__form">
+    <div class="weui-search-bar__form">
         <div class="weui-search-bar__box">
             <i class="weui-icon-search"></i>
-            <input type="search" class="weui-search-bar__input" id="searchInput" placeholder="搜索" required="" disabled>
+            <input type="search" class="weui-search-bar__input" id="searchInput" placeholder="搜索" required="" onsearch="newBlackSerach()">
             <a href="javascript:" class="weui-icon-clear" id="searchClear"></a>
         </div>
         <label class="weui-search-bar__label" id="searchText">
             <i class="weui-icon-search"></i>
             <span>搜索</span>
         </label>
-    </form>
+    </div>
     <a href="javascript:" class="weui-search-bar__cancel-btn" id="searchCancel">取消</a>
 </div>
 
@@ -105,6 +105,19 @@
         if(_month < 10){_month = "0" + _month;}
         if(_date<10){_date="0"+_date  }
         return  _year + "/" + _month + "/" + _date + " " + _hour + ":" + _minute + ":" + _second ;
+    }
+
+    function getRequest() {
+        var url = location.search; //获取url中"?"符后的字符串
+        var theRequest = new Object();
+        if (url.indexOf("?") != -1) {
+            var str = url.substr(1);
+            strs = str.split("&");
+            for (var i = 0; i < strs.length; i++) {
+                theRequest[strs[i].split("=")[0]] = decodeURIComponent(strs[i].split("=")[1]);
+            }
+        }
+        return theRequest;
     }
 </script>
 
@@ -181,9 +194,15 @@
     }
 
     function requestNewBlackList(pageNum,callback) {
-        console.log("pageNum --> " + pageNum);
+        var dnic = getRequest()['dnic'];
+        var realURL;
+        if(dnic == null || dnic == "") {
+            realURL = "http://127.0.0.1:8088/douyu/newBlack?from=" + pageNum * pageSize;
+        } else {
+            realURL = "http://127.0.0.1:8088/douyu/newBlack?from=" + pageNum * pageSize + "&key=dnic&keyWord=" + dnic;
+        }
         $.ajax({
-            url:"http://139.159.252.127:8088/douyu/newBlack?from=" + pageNum * pageSize,
+            url:realURL,
             dataType:"json",
             success:function (data) {
                 console.log(data)
@@ -213,6 +232,11 @@
             pageNum ++ ;
         })
     })
+
+    function newBlackSerach() {
+        var dnic = $("#searchInput").val();
+        window.location.href = /*"http:" + document.location.hostname + document.location.pathname +*/ "?dnic=" + dnic;
+    }
 
 </script>
 
