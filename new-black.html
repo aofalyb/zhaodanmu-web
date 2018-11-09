@@ -197,9 +197,9 @@
         var dnic = getRequest()['dnic'];
         var realURL;
         if(dnic == null || dnic == "") {
-            realURL = "http://127.0.0.1:8088/douyu/newBlack?from=" + pageNum * pageSize;
+            realURL = "http://139.159.252.127:8088/douyu/newBlack?from=" + pageNum * pageSize;
         } else {
-            realURL = "http://127.0.0.1:8088/douyu/newBlack?from=" + pageNum * pageSize + "&key=dnic&keyWord=" + dnic;
+            realURL = "http://139.159.252.127:8088/douyu/newBlack?from=" + pageNum * pageSize + "&key=dnic&keyWord=" + dnic;
         }
         $.ajax({
             url:realURL,
