@@ -12,9 +12,7 @@
         .weui-media-box__desc {
             -webkit-line-clamp: 999;
         }
-        .weui-cell {
-            padding: 10px 0 0 0
-        }
+
     </style>
 </head>
 <body>
@@ -35,13 +33,26 @@
 </div>
 
 <div class="weui-panel weui-panel_access">
-    <div class="weui-panel__bd" id="listContainer">
+
+    <div id="listContainer">
+
+        <!--<div class="weui-panel__bd">-->
         <!--<a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">-->
-            <!--<div class="weui-media-box__bd">-->
-                <!--<p class="weui-media-box__desc">由各种物质组成的巨型球状天体，叫做星球。星球有一定的形状，有自己的运行轨道。</p>-->
-            <!--</div>-->
+        <!--<div class="weui-media-box__bd">-->
+        <!--<p class="weui-media-box__desc">由各种物质组成的巨型球状天体，叫做星球。星球有一定的形状，有自己的运行轨道。</p>-->
+        <!--</div>-->
         <!--</a>-->
+        <!--</div>-->
+        <!--<div class="weui-panel__ft">-->
+        <!--<a href="javascript:void(0);" class="weui-cell weui-cell_access weui-cell_link">-->
+        <!--<div class="weui-cell__bd">查看更多</div>-->
+        <!--<span class="weui-cell__ft"></span>-->
+        <!--</a>-->
+        <!--</div>-->
+
     </div>
+
+
     <div class="weui-loadmore" id="loadMoreFooter">
         <i class="weui-loading"></i>
         <span class="weui-loadmore__tips">正在加载</span>
@@ -93,20 +104,28 @@
     }
 
     function appendAppMsgDiv(perData) {
+        var listChild = $("<div></div>");
         var box_appmsg = $("<a href='javascript:void(0);' class='weui-media-box weui-media-box_appmsg'>")
         var box_bd = $("<div class='weui-media-box__bd'>");
         box_appmsg.append(box_bd);
-        var cell_link = $("<a href='javascript:void(0);' class='weui-cell weui-cell_access weui-cell_link'>")
-        cell_link.attr("href","searchResult.html?input_value=" + perData.dnic);
-        var cell__bd = $("<div class='weui-cell__bd'>膜拜他的发言记录</div>")
-        cell_link.append(cell__bd);
-        var cell__ft = $("<span class='weui-cell__ft'></span>")
-        cell_link.append(cell__ft)
         var box_desc = $("<p class='weui-media-box__desc' style='font-size: 15px'></p>")
         box_desc.html(operateDescBuild(perData));
-        box_bd.append(box_desc)
-        box_bd.append(cell_link)
-        return box_appmsg;
+        box_bd.append(box_desc);
+        var panel__bd = $("<div class='weui-panel__bd'>");
+        panel__bd.append(box_appmsg);
+        listChild.append(panel__bd);
+
+        var panel__ft = $("<div class='weui-panel__ft'>");
+        var cell_link = $("<a href='javascript:void(0);' class='weui-cell weui-cell_access weui-cell_link'>")
+        cell_link.attr("href","searchResult.html?input_value=" + perData.dnic);
+        var cell__bd = $("<div class='weui-cell__bd'>看看他说了啥</div>");
+        cell_link.append(cell__bd);
+        var cell__ft = $("<span class='weui-cell__ft'></span>");
+        cell_link.append(cell__ft);
+        panel__ft.append(cell_link);
+        listChild.append(panel__ft);
+
+        return listChild;
     }
 
     /**
@@ -158,12 +177,10 @@
 
     //默认加载第一页，pageNum=0;
     $(document).ready(function () {
-
         if(document.location.protocol == "https:") {
-            $.alert("抱歉，页面不能使用HTTPS协议访问，请手动切换至HTTP(点击地址输入框，修改网址开头https为http)");
+            $.alert("若不能正常访问，请手动把HTTPS切换至HTTP(点击地址输入框，修改网址协议https为http)");
             //window.location.href = "http:" + document.location.hostname + document.location.pathname;
         }
-
         const HOME_PAGE_NUM = 0;
         requestNewBlackList(HOME_PAGE_NUM,function (dataList) {
             appendNextPage(dataList);
