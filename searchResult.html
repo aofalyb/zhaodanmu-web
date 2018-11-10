@@ -12,6 +12,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
     <![endif]-->
     <style>
+        .main-box{
+            padding-top: 65px;
+        }
         .zdm-searchData .table{
             width: 100%;
             table-layout: fixed;
@@ -22,9 +25,9 @@
             width: 100%;
             font-size: 15px;
         }
-        .adm-personInfo .container{
-            padding: 15px 0px;
-            border-top: 1px solid #ddd;
+        .adm-personInfo{
+            padding-bottom: 15px;
+            /*border-top: 1px solid #ddd;*/
             border-bottom: 1px solid #ddd;
         }
         .adm-personInfo .media-heading{
@@ -74,9 +77,8 @@
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
 </nav>
-<div style="padding-top: 50px">
-    <div class="adm-personInfo">
-        <div class="container">
+<div class="main-box">
+    <div class="adm-personInfo container-fluid">
             <div class="media">
                 <div class="media-left">
                     <img class="media-object" src="" alt="头像">
@@ -87,10 +89,8 @@
                     <p class="commonLevel"></p>
                 </div>
             </div>
-        </div>
     </div>
-    <div class="zdm-searchData">
-        <div class="container">
+    <div class="zdm-searchData container-fluid">
             <table class="table table-hover">
                 <caption align="center"><b>查询结果</b></caption>
                 <thead>
@@ -108,7 +108,6 @@
                 <i class="weui-loading"></i>
                 <span class="weui-loadmore__tips">正在加载</span>
             </div>
-        </div>
     </div>
 </div>
 
@@ -138,25 +137,32 @@
     }
 
     //获得搜索框传递过来的值
-    var value = GetRequest()['input_value'];
+    let inputValue = GetRequest()['input_value'];
+    //一次请求弹幕数量
     const pageSize = 15;
-    //获得用户Id
-    requestUserInfo(value,function (userId) {
+    let loading = false;  //状态标记
+    //先通过昵称获得用户Id，再通过ID获得弹幕数据
+    requestUserInfo(inputValue,function (res) {
+        if (res.data.list.length == 0) {//没有此用户
+            clearLoadmore();
+            $('.zdm-searchData').html('<p>没有找到此用户信息</p>');
+            return;
+        }
+        let userId = res.data.list[0].uid;
+        addPersonInfo(res.data.list[0]);//添加用户信息
+        //以下获取弹幕内容
         //初始化加载页面为0
         var page = 0;
-        requestDanmuData(userId,page);
+        requestDanmuData(userId,page,handleDanmuData);
         // 初始化滚动加载插件
         $(document.body).infinite();
         // 监听触发 infinite 事件 当滚动条到达页面底部时触发
-        var loading = false;  //状态标记
         $(document.body).infinite().on("infinite", function() {
             if(loading) return;
             loading = true;
             page++;
             //数据加载完成
-            requestDanmuData(userId,page,function () {
-                loading = false;
-            });
+            requestDanmuData(userId,page,handleDanmuData);
         });
     });
     //获得搜索框传递过来的值
@@ -189,7 +195,7 @@
         if(_date<10){_date="0"+_date  }
         return  _year + "/" + _month + "/" + _date + " " + _hour + ":" + _minute + ":" + _second ;
     }
-    //将获得数据添加到表格中
+    //将获得弹幕数据添加到页面表格中
     function addData(res){
         for (var i = 0; i< res.data.list.length;i++) {
             var $tr = $('<tr></tr>');
@@ -203,7 +209,7 @@
             $tr.append($td1);
             $tr.append($td2);
             $tr.append($td3);
-            $('.zdm-searchData .container table tbody').append($tr);
+            $('.zdm-searchData table tbody').append($tr);
         }
     }
     //发送ajax请求弹幕数据
@@ -218,24 +224,7 @@
                 console.log(res);
             },
             success:function (res) {
-                if (res.code == -1){
-                    console.log('error');
-                }else{
-                    if (res.data.size > 0){//查找到数据
-                        console.log(res);
-                        if (res.data.size < pageSize) {//每一页十行数据 小于十行说明数据都加载完成
-                             clearLoadmore();
-                        }
-                        console.log(res);
-                        addData(res);
-                        callback && callback();
-                    }else{//请求数据为空
-                         clearLoadmore();
-                        if (!$('.zdm-searchData tr')){//没有有弹幕数据
-                            $('.zdm-searchData').html('<p>弹幕记录为空</p>');
-                        }
-                    }
-                }
+                callback&callback(res);
             }
         });
     }
@@ -251,18 +240,11 @@
                 console.log(res);
             },
             success:function (res) {
-                if (res.data.list.length == 0){//没有此用户
-                    clearLoadmore();
-                    $('.zdm-searchData').html('<p>没有找到此用户信息</p>');
-                }else{
-                    console.log(res);
-                    userId = res.data.list[0].uid;
-                    addPersonInfo(res.data.list[0]);//添加用户信息
-                    callback(userId);
-                }
+               callback&& callback(res);
             }
         });
     }
+    //页面添加个人用户信息
     function addPersonInfo(res) {
         var name = res.nn;
         var headImage = res.ic;
@@ -279,6 +261,7 @@
         $(document.body).destroyInfinite();
         $(".weui-loadmore").hide();
     }
+    //获得vip等级名称
     function vipLevel(vLevel){
         var levelName ='';
         switch (vLevel) {
@@ -312,6 +295,27 @@
             }
         }
         return levelName;
+    }
+    //处理请求响应的弹幕数据
+    function handleDanmuData(res) {
+        if (res.code == -1){
+            console.log('error');
+        }else{
+            if (res.data.size > 0){//查找到数据
+                console.log(res);
+                if (res.data.size < pageSize) {//每一页十行数据 小于十行说明数据都加载完成
+                    clearLoadmore();
+                }
+                console.log(res);
+                addData(res);
+            }else{//请求数据为空
+                clearLoadmore();
+                if (!$('.zdm-searchData tr')){//没有有弹幕数据
+                    $('.zdm-searchData').html('<p>弹幕记录为空</p>');
+                }
+            }
+        }
+        loading = false;
     }
 </script>
 </body>

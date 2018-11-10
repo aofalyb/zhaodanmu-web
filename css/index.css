@@ -5,6 +5,29 @@ body{
     color: #333333;
     /*background-color: #CCCCCC;*/
 }
+html,body {
+    height:100%;
+    width:100%;
+    overflow:hidden;
+    margin:0;
+    padding:0;
+}
+/*清除浮动*/
+.clearfix::before,
+.clearfix::after{
+    display: block;
+    content: "";
+    height: 0px;
+    line-height: 0px;
+    visibility: hidden;
+    clear: both;
+}
+.clearfix {
+    zoom: 1;
+}
+li a {
+    text-align: center;
+}
 input,textarea{
     border: none;
     outline: none;
@@ -31,18 +54,55 @@ a:hover{
     float: right;
 }
 /*index css*/
+.navbar-default .navbar-toggle {
+    background-color: white;
+}
+.navbar-default .navbar-toggle {
+    border-color: white;
+}
+.navbar-header {
+    background-color: white;
+}
+
+.navbar-default .navbar-toggle:hover,
+.navbar-default .navbar-toggle:focus {
+    background-color: white;
+}
+.navbar-default .navbar-toggle .icon-bar {
+    background-color: #212121;
+    width: 16px;
+}
 /*header部分*/
 .zdm-topbar{
     height: 175px;
     background: #212121;
 }
+.notice-info{
+    margin-top: 10px;
+    background: rgba(255,0,0,.7);
+    padding: 5px 5px;
+    color: #fff;
+    border-radius: 5px;
+    font-size: 14px;
+    overflow: hidden;
+    text-align: center;
+    /*line-height: 30px;*/
+}
+.notice-info .notice-content{
+    text-align: left;
+}
+.notice-info span{
+    font-size: 16px;
+    margin-top: 3px;
+}
+
 /*导航栏*/
 .zdm-nav{
     padding: 30px;
     background-color: #fff;
     margin-top: -73px;
     border-radius: 5px;
-    box-shadow: 0 0 1px #3c3c3c;
+    box-shadow: 1px 1px 2px 2px #ddd;
 }
 .zdm-nav  .nav-tabs {
     /*border-bottom: 1px solid #ddd;*/
@@ -105,16 +165,23 @@ a:hover{
 .zdm-nav .zdm-search-history ul li{
     padding-top: 10px;
 }
-.zdm-nav .zdm-search-history ul li span:hover{
-    border-bottom: 1px solid #ddd;
-}
 .zdm-nav .zdm-search-history ul li a{
     float: right;
 }
-.zdm-nav .zdm-search-history ul li a:hover,
-.zdm-nav .zdm-search-history .clear-all a:hover{
-    border-bottom: 1px solid #f00;
-}
+/*.zdm-nav .zdm-search-history ul li a:hover,*/
+/*.zdm-nav .zdm-search-history .clear-all a:hover{*/
+    /*border-bottom: 1px solid #f00;*/
+/*}*/
  .zdm-nav .zdm-search-history .clear-all{
      text-align: center;
  }
+.zdm-nav .zdm-search-history .clear-all{
+    margin-bottom: -20px;
+}
+
+.zdm-footer.weui-footer{
+    position: absolute;
+    width: 100%;
+    left: 0px;
+    bottom: 0px;
+}

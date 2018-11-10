@@ -10,40 +10,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.3/style/weui.min.css">
     <link href="css/index.css" rel="stylesheet">
-    <style>
-        .navbar-default .navbar-toggle {
-            background-color: white;
-        }
-        .navbar-default .navbar-toggle {
-            border-color: white;
-        }
-        .navbar-header {
-            background-color: white;
-        }
-
-        .navbar-default .navbar-toggle:hover,
-        .navbar-default .navbar-toggle:focus {
-            background-color: white;
-        }
-        .navbar-default .navbar-toggle .icon-bar {
-            background-color: #212121;
-            width: 16px;
-        }
-
-        li a {
-            text-align: center;
-        }
-        html,body {
-            height:100%;
-            width:100%;
-            overflow:hidden;
-            margin:0;
-            padding:0;
-        }
-    </style>
 </head>
 <body>
-
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -110,14 +78,18 @@
                 </div>
             </div>
         </nav>
+        <!--<div class="notice-info clearfix">-->
+            <!--<div class="notice-content float_left">公告信息栏公告信息栏公告信息栏公告信息栏公告信息栏公告信息栏公告信</div>-->
+            <!--<span class="glyphicon glyphicon-remove-circle float_right"></span>-->
+        <!--</div>-->
     </div>
 </div>
 
-<div style="height: 40%">
+<!--<div style="height: 40%">-->
 
-</div>
+<!--</div>-->
 
-<div class="weui-footer">
+<div class="zdm-footer weui-footer">
     <p class="weui-footer__links">
         <a href="javascript:void(0);" class="weui-footer__link">找弹幕<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1275256714'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s5.cnzz.com/z_stat.php%3Fid%3D1275256714%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script></a>
     </p>
@@ -178,10 +150,24 @@
         $historyElement.children('ul').on('click','span',function () {
             let selectVal =$(this).html();
             $searchElement.val(selectVal);
-        })
+            $(window).attr('location','searchResult.html?input_value='+selectVal);
+        });
         //鼠标在输入框时 历史记录显示
-        $searchElement.on('focus',function () {
+        $searchElement.on('click',function (e) {
+            //取消冒泡事件
+            stopBubble(e);
             $historyElement.show();
+        });
+        $('.navbar-collapse.collapse').on('click',function (e) {
+            //取消冒泡事件
+            stopBubble(e);
+        });
+        //点击空白处历史记录隐藏和顶部菜单展开状态时变为合并
+        $(document).on('click',function () {
+            $historyElement.hide();
+            if($('.navbar-collapse.collapse').hasClass('in')){
+                $('.navbar-collapse.collapse').removeClass('in');
+            }
         });
 
         // 监听搜索框回车事件并响应
@@ -202,16 +188,17 @@
                 }else{
                     /*2.input监听到enter键并且输入框满足条件时更新历史记录渲染列表*/
                     /*追加一条历史*/
-                    historyListArr.forEach(function (item,index) {
-                        if (item === value){
-                            historyListArr.splice(index,1);
-                            return false;//跳出循环
+                    for (let i = 0; i < historyListArr.length; i++) {
+                        if (historyListArr[i] === value){
+                            historyListArr.splice(i,1);
+                            break;//跳出循环
                         }
-                    })
+                    }
                     historyListArr.unshift(value);//添加到数组第一项
+                    $searchElement.popover('hide');
                     /*保存*/
                     localStorage.setItem('zdm-historyList',JSON.stringify(historyListArr));
-                    $(window).attr('location','searchResult.html?input_value='+value)
+                    $(window).attr('location','searchResult.html?input_value='+value);
                 }
             }
         });
@@ -240,6 +227,16 @@
             }
         }
     });
+    function stopBubble(e){
+        //一般用在鼠标或键盘事件上
+        if(e && e.stopPropagation){
+            //W3C取消冒泡事件
+            e.stopPropagation();
+        }else{
+            //IE取消冒泡事件
+            window.event.cancelBubble = true;
+        }
+    };
 </script>
 
 
