@@ -235,6 +235,10 @@
 
     function newBlackSerach() {
         var dnic = $("#searchInput").val();
+        if(dnic == null || dnic == undefined) {
+            $.alert("输入你要查找的封禁用户名");
+            return;
+        }
         window.location.href = /*"http:" + document.location.hostname + document.location.pathname +*/ "?dnic=" + dnic;
     }
 
