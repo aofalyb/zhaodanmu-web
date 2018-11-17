@@ -120,6 +120,7 @@
     $(document).ready(function () {
         if(document.location.protocol == "https:") {
             $.alert("若不能正常访问，请手动把HTTPS切换至HTTP(点击地址输入框，修改网址协议https为http)");
+            return
         }
         $.alert("网站为个人业余作品，由于数据采集对服务器性能消耗大，无法保证采集到所有直播间房间，如果你要需要，<a style='color: red'>请留言建议<a>，我会根据服务器性能逐步添加到采集列表");
 
@@ -134,8 +135,6 @@
 
 
     function appendDiv(data) {
-        console.log(data)
-
         var panel__bd = $("<div class='weui-panel__bd'>");
         var box_appmsg = $("<a href='javascript:void(0);' class='weui-media-box weui-media-box_appmsg'>");
 
