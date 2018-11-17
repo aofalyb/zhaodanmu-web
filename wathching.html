@@ -122,7 +122,15 @@
             $.alert("若不能正常访问，请手动把HTTPS切换至HTTP(点击地址输入框，修改网址协议https为http)");
             return
         }
-        $.alert("网站为个人业余作品，由于数据采集对服务器性能消耗大，无法保证采集到所有直播间房间，如果你要需要，<a style='color: red'>请留言建议<a>，我会根据服务器性能逐步添加到采集列表");
+        $.modal({//"重要提示","找弹幕网是我利用空余时间开发的免费网站，由于数据采集对服务器性能消耗大，无法保证采集到所有直播间，如果你要需要，<b>请告诉我</b>，我会视服务器性能逐步添加到采集列表"
+
+            title:"重要提示",
+            text:"找弹幕网是我利用空余时间开发的免费网站，由于数据采集对服务器性能消耗大，无法保证采集到所有直播间，如果你要需要，<b>请告诉我</b>，我会视服务器性能逐步添加到采集列表",
+            buttons: [
+                { text: "取消", className: "default", onClick: function(){ } },
+                { text: "告诉我", onClick: function(){ tellMe()} },
+            ]
+        });
 
         requestNewBlackList(function (dataList) {
             if(dataList.length > 0) {
@@ -132,6 +140,10 @@
             }
         })
     })
+
+    function tellMe() {
+        $.alert("email:707748808@qq.com")
+    }
 
 
     function appendDiv(data) {
