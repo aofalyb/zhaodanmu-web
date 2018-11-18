@@ -81,7 +81,7 @@
     <div class="adm-personInfo container-fluid">
             <div class="media">
                 <div class="media-left">
-                    <img class="media-object" src="" alt="头像">
+                    <img class="media-object" src="https://apic.douyucdn.cn/upload/avatar/default/06_middle.jpg" alt="头像">
                 </div>
                 <div class="media-body">
                     <h4 class="media-heading"></h4>
@@ -145,7 +145,8 @@
     requestUserInfo(inputValue,function (res) {
         if (res.data.list.length == 0) {//没有此用户
             clearLoadmore();
-            $('.zdm-searchData').html('<p>没有找到此用户信息</p>');
+            $('.zdm-searchData').html('<p><h1>404 NOT FOUND</h1>没有找到此用户信息，可能的原因是<br>1.用户无发言记录；<br>2.用户发言不在已监听的直播间范围内<br><a href="wathching.html">查看已监听的房间列表</a>' +
+                '<br>3.房间刚加入监听，数据还未处理，请稍等3分钟或者<a href="wathching.html">告诉我</a><br>4.你使用了HTTPS访问</p>');
             return;
         }
         let userId = res.data.list[0].uid;
