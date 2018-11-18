@@ -253,7 +253,7 @@
         var cLevel = res.level;
         var $media = $(".adm-personInfo .media").children('div');
         $media.eq(0).children().attr('src',realAvaPath(headImage));
-        $media.eq(1).children('h4').html('昵称: ' + name);
+        $media.eq(1).children('h4').html('<b>' + name + '</b>');
         $media.eq(1).children('p').eq(0).html('贵族等级: '+'<b>'+vipLevel(vLevel)+'</b>');
         $media.eq(1).children('p').eq(1).html('普通等级: '+'<b>'+cLevel+'</b>');
     }
